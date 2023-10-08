@@ -1,3 +1,3 @@
-# pulsar_producer
-
-* how to use pulsar as producer
+# How to use pulsar producer with rust crate *pulsar*
+***
+* use pulsar send message.
