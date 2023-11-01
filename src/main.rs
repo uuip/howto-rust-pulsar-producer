@@ -1,14 +1,18 @@
+use std::io::Write;
+
+use chrono::Local;
+use env_logger::fmt::Color;
 use log::{info, LevelFilter};
 use once_cell::sync::Lazy;
 use pulsar::{producer, proto, Pulsar, TokioExecutor};
 use serde_json::json;
-use setting::Setting;
-use simplelog::{ColorChoice, ConfigBuilder, TermLogger, TerminalMode};
 use uuid::Uuid;
 
+use crate::setting::Setting;
+
+use crate::schema::{Msg, MSG_SCHEMA};
 #[rustfmt::skip]
 use crate::model::TokenCode;
-use crate::schema::{Msg, MSG_SCHEMA};
 
 mod model;
 mod schema;
@@ -18,12 +22,23 @@ static SETTING: Lazy<Setting, fn() -> Setting> = Lazy::new(Setting::init);
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    TermLogger::init(
-        LevelFilter::Info,
-        ConfigBuilder::new().build(),
-        TerminalMode::Mixed,
-        ColorChoice::Auto,
-    )?;
+    env_logger::builder()
+        .filter_level(LevelFilter::Warn)
+        .format(|buf, record| {
+            let mut level_style = buf.style();
+            if record.level() == LevelFilter::Warn {
+                level_style.set_color(Color::Ansi256(206_u8));
+            }
+            writeln!(
+                buf,
+                "[{} | line:{:<4}|{}]: {}",
+                Local::now().format("%H:%M:%S"),
+                record.line().unwrap_or(0),
+                level_style.value(record.level()),
+                level_style.value(record.args())
+            )
+        })
+        .init();
 
     let schema: serde_json::Value = serde_json::from_str(MSG_SCHEMA)?;
     let schema_data = serde_json::to_vec(&schema).unwrap();
