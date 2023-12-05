@@ -1,7 +1,3 @@
-use deadpool_postgres::{Config, Pool, Runtime};
-use tokio_postgres::NoTls;
-use url::Url;
-
 #[derive(Debug)]
 pub struct Setting {
     pub pulsar_addr: String,
@@ -48,24 +44,4 @@ impl Setting {
             token_e,
         }
     }
-}
-
-#[allow(dead_code)]
-pub async fn connection() -> Pool {
-    let db_url = dotenvy::var("DB_URL").unwrap_or_else(|_| panic!("lost DB_URL"));
-    let max_size = dotenvy::var("BATCH_SIZE")
-        .unwrap_or_else(|_| panic!("lost BATCH_SIZE"))
-        .parse::<usize>()
-        .unwrap_or(50);
-    let dsn = Url::parse(&db_url).unwrap();
-    let mut cfg = Config::new();
-    cfg.host = dsn.host().map(|x| x.to_string());
-    cfg.port = dsn.port();
-    cfg.dbname = dsn.path_segments().unwrap().next().map(|x| x.to_string());
-    cfg.user = Some(dsn.username().to_string());
-    cfg.password = dsn.password().map(|x| x.to_string());
-    cfg.options = Some("-c LC_MESSAGES=en_US.UTF-8".into());
-    let pool = cfg.create_pool(Some(Runtime::Tokio1), NoTls).unwrap();
-    pool.resize(max_size);
-    pool
 }
