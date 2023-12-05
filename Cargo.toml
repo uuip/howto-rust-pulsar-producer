@@ -27,6 +27,7 @@ pulsar = "6.1.0"
 url = "2.5.0"
 uuid = { version = "1.6.1", features = ["v4", "fast-rng"]}
 duplicate = "1.0.0"
+strum = { version = "0.25.0", features = ["derive"] }
 
 [profile.release]
 lto = true
