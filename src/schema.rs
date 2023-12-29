@@ -38,79 +38,45 @@ pub static MSG_SCHEMA: &str = r#"{
   "$id": "https://example.com/test.schema.json",
   "type": "record",
   "name": "Msg",
-  "fields": [
-    {
-      "name": "from_user_id",
-      "type": [
-        "null",
-        "string"
-      ]
-    },
-    {
-      "name": "to_user_id",
-      "type": [
-        "null",
-        "string"
-      ]
-    },
-    {
-      "name": "order_id",
-      "type": [
-        "null",
-        "string"
-      ]
-    },
-    {
-      "name": "point",
-      "type": [
-        "null",
-        "int"
-      ]
-    },
-    {
-      "name": "coin_code",
-      "type": [
-        "null",
-        {
-          "type": "enum",
-          "name": "TokenCode",
-          "symbols": [
-            "A",
-            "B",
-            "C",
-            "D",
-            "E"
-          ]
-        }
-      ]
-    },
-    {
-      "name": "gen_time",
-      "type": [
-        "null",
-        "long"
-      ]
-    },
-    {
-      "name": "ext_json",
-      "type": [
-        "null",
-        "string"
-      ]
-    },
-    {
-      "name": "tag_id",
-      "type": [
-        "null",
-        "string"
-      ]
-    },
-    {
-      "name": "store_id",
-      "type": [
-        "null",
-        "string"
-      ]
-    }
-  ]
+    "fields": [
+      {
+        "name": "from_user_id",
+        "type": "string"
+      },
+      {
+        "name": "to_user_id",
+        "type": "string"
+      },
+      {
+        "name": "coin_code",
+        "type": "string"
+      },
+      {
+        "name": "point",
+        "type": "float"
+      },
+      {
+        "name": "tag_id",
+        "type": "string"
+      },
+      {
+        "name": "store_id",
+        "type": "string"
+      },
+      {
+        "name": "gen_time",
+        "type": "string"
+      },
+      {
+        "name": "ext_json",
+        "type": "string"
+      },
+      {
+        "name": "retry_info",
+        "type": [
+          "null",
+          "string"
+        ]
+      }
+    ]
 }"#;
