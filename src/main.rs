@@ -23,7 +23,7 @@ static SETTING: Lazy<Setting, fn() -> Setting> = Lazy::new(Setting::init);
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     env_logger::builder()
-        .filter_level(LevelFilter::Warn)
+        .filter_level(LevelFilter::Info)
         .format(|buf, record| {
             let mut level_style = buf.style();
             if record.level() == LevelFilter::Warn {
